@@ -8,21 +8,51 @@ module.exports = router;
 // write your routes here. Feel free to split into multiple files if you like.
 
 
-router.get('/', function(req, res, next){
-	res.send('Welcome to home page.');
-	next();
+router.get('/users', function(req, res){
+	res.send(todos.listPeople());
 });
 
-router.get('/users', function(req, res, next){
-	console.log('List of people');
-	let listOfPeople = todos.listPeople();
-	res.send(listOfPeople);
-	next();
+// router.get('/users/:name/tasks', function(req, res){
+// 	let person = req.params.name;
+// 	res.send(todos.list(person));
+// });
+
+router.post('/users/:name/tasks', function(req, res){
+	let person = req.params.name;
+	let personsTask = req.body;
+	res.statusCode = 201;
+	res.send(todos.add(person, personsTask))
 });
 
-todos.listPeople();
-todos.add('dave', { content: 'task 1 for dave' });
-todos.add('joe', { content: 'task 1 for joe', complete: true });
-todos.add('joe', { content: 'task 2 for joe' });
+router.get('/users/:name/tasks', function(req, res){
+	let person = req.params.name;
+	let taskStatus = req.query.status;  //Either {'status': 'complete'} or {'status': 'active'} aka incomplete
+	if(taskStatus === 'complete'){
+		let tasks = todos.list(person).filter(task => task.complete === true);
+		res.send(tasks);
+	}
+	else{
+		let tasks = todos.list(person).filter(task => task.complete === false);
+		res.send(tasks);
+	}
+});
 
-todos.listPeople();
+router.put('/users/:name/tasks/:index', function(req, res){
+	let person = req.params.name;
+	let index = req.params.index;
+	todos.list(person)[index].complete = true;
+	res.send('Updated task.');
+});
+
+router.delete('/users/:name/tasks/:index', function(req, res){
+	let person = req.params.name;
+	let index = req.params.index;
+	res.statusCode = 204;
+	todos.list(person).splice(index, 1);
+	res.send('Finished task.');
+});
+
+
+
+
+

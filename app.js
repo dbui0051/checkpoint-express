@@ -12,7 +12,7 @@ module.exports = app; // this line is only used to make testing easier.
 app.use(volleyball);
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({extended: true}));
 
 
 app.use(function(req, res, next){
