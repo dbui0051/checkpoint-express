@@ -8,20 +8,24 @@ module.exports = router;
 // write your routes here. Feel free to split into multiple files if you like.
 
 
-router.get('/users', function(req, res){
+router.get('/users', function(req, res, next){
 	res.send(todos.listPeople());
 });
 
-// router.get('/users/:name/tasks', function(req, res){
-// 	let person = req.params.name;
-// 	res.send(todos.list(person));
-// });
-
-router.post('/users/:name/tasks', function(req, res){
+router.get('/users/:name/tasks', function(req, res){
 	let person = req.params.name;
-	let personsTask = req.body;
+	if(todos.listPeople().indexOf(person) === -1){
+		res.statusCode = 404;
+		res.send('404 Not Found');
+	}
+	res.send(todos.list(person));
+});
+
+router.get('/users/:name/tasks', function(req, res){
+	let person = req.params.name;
+	let personsTask
 	res.statusCode = 201;
-	res.send(todos.add(person, personsTask))
+	res.send(todos.add(person, personsTask));
 });
 
 router.get('/users/:name/tasks', function(req, res){
@@ -51,8 +55,6 @@ router.delete('/users/:name/tasks/:index', function(req, res){
 	todos.list(person).splice(index, 1);
 	res.send('Finished task.');
 });
-
-
 
 
 

@@ -51,7 +51,7 @@ describe('Todo routes', function() {
 
   describe('`/users/:name/tasks` URI', function() {
 
-    xit('GET lists all tasks for a specific user', function() {
+    it('GET lists all tasks for a specific user', function() {
       todos.add('dave', { content: 'task 1 for dave' });
       todos.add('joe', { content: 'task 1 for joe', complete: true });
       todos.add('joe', { content: 'task 2 for joe' });
@@ -68,7 +68,7 @@ describe('Todo routes', function() {
         });
     });
 
-    xit('POST creates a new task for that user & responds with the created task', function() {
+    it('POST creates a new task for that user & responds with the created task', function() {
       return supertest
         .post('/users/sarah/tasks')
         .send({ content: 'a new task for sarah'}) // the HTTP request body
@@ -125,7 +125,7 @@ describe('Todo routes', function() {
           });
       });
 
-      it('GET can get just the active (incomplete) tasks', function () {
+      xit('GET can get just the active (incomplete) tasks', function () {
         return supertest
           .get('/users/billy/tasks?status=active')
           .expect(200)
@@ -172,13 +172,13 @@ describe('Todo routes', function() {
 
     describe('error handling', function() {
 
-      xit('responds with a 404 if a user does not exist', function () {
+      it('responds with a 404 if a user does not exist', function () {
         return supertest
           .get('/users/obama/tasks')
           .expect(404);
       });
 
-      xit('responds with a 400 if you attempt to add a todo with non-standard field', function () {
+      it('responds with a 400 if you attempt to add a todo with non-standard field', function () {
         return supertest
           .post('/users/bob/tasks')
           .send({

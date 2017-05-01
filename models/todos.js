@@ -1,6 +1,6 @@
 'use strict';
 
-var tasks = {}; // a place to store tasks by person
+let tasks = {}; // a place to store tasks by person
 let listOfPeople = [];
 
 
