@@ -87,7 +87,7 @@ describe('Todo routes', function() {
         });
     });
 
-    xit('POST respects pre-existing completion status', function() {
+    it('POST respects pre-existing completion status', function() {
       return supertest
         .post('/users/sarah/tasks')
         .send({ content: 'a new task for sarah', complete: true}) // the HTTP request body
@@ -178,7 +178,7 @@ describe('Todo routes', function() {
           .expect(404);
       });
 
-      it('responds with a 400 if you attempt to add a todo with non-standard field', function () {
+      xit('responds with a 400 if you attempt to add a todo with non-standard field', function () {
         return supertest
           .post('/users/bob/tasks')
           .send({
