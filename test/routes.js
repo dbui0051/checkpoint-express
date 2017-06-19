@@ -125,7 +125,7 @@ describe('Todo routes', function() {
           });
       });
 
-      xit('GET can get just the active (incomplete) tasks', function () {
+      it('GET can get just the active (incomplete) tasks', function () {
         return supertest
           .get('/users/billy/tasks?status=active')
           .expect(200)

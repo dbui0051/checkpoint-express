@@ -13,28 +13,25 @@ router.get('/users', function(req, res, next){
 });
 
 router.get('/users/:name/tasks', function(req, res){
-	if (todos.listPeople().indexOf(req.params.name) === -1) return res.status(404).send('404 Not Found');
+	let person = req.params.name;
+	let taskStatus = req.query.status;
+
+	if (todos.listPeople().indexOf(person) === -1) return res.status(404).send('404 Not Found');
+	if (taskStatus === 'complete'){
+		let tasks = todos.list(person).filter(task => task.complete === true);
+		return res.send(tasks);
+	}
+	else if (taskStatus === 'active') {
+		let tasks = todos.list(person).filter(task => task.complete === false);
+		return res.send(tasks);
+	}
+
 	res.send(todos.list(req.params.name));
 });
 
 router.post('/users/:name/tasks', function(req, res){
 	todos.add(req.params.name, req.body)
 	res.status(201).json(req.body);
-});
-
-router.get('/users/:name/tasks', function(req, res){
-	let person = req.params.name;
-	let taskStatus = req.query.status;  //Either {'status': 'complete'} or {'status': 'active'} aka incomplete
-	if (taskStatus === 'complete'){
-		let tasks = todos.list(person).filter(task => task.complete === true);
-		console.log('complete --------', tasks)
-		res.send(tasks);
-	}
-	else {
-		let tasks = todos.list(person).filter(task => task.complete === false);
-		console.log('incomplete --------', tasks)
-		res.send(tasks);
-	}
 });
 
 router.put('/users/:name/tasks/:index', function(req, res){
